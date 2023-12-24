@@ -1,7 +1,6 @@
 import pytest
 
 from src.app.core.app.headers import Headers
-from src.app.core.app.types import Scope
 
 
 @pytest.fixture

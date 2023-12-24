@@ -9,16 +9,12 @@ def test_str_convertor():
     convertor = StrConvertor()
     assert convertor.convert('test') == 'test'
     assert convertor.to_str('test') == 'test'
-    with pytest.raises(AssertionError):
-        convertor.to_str('test/test')
 
 
 def test_int_convertor():
     convertor = IntConvertor()
     assert convertor.convert('123') == 123
     assert convertor.to_str(123) == '123'
-    with pytest.raises(AssertionError):
-        convertor.to_str(-1)
 
 
 def test_path_convertor():

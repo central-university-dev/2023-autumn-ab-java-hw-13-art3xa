@@ -1,14 +1,12 @@
-from urllib.parse import parse_qsl
 
 import pytest
 
 from src.app.core.app.query_params import QueryParams
-from src.app.core.app.types import Scope
 
 
 @pytest.fixture
 def query_params():
-    scope = {'query_string': 'key1=value1&key2=value2'.encode('utf-8')}
+    scope = {'query_string': b'key1=value1&key2=value2'}
     return QueryParams(scope)
 
 
@@ -24,7 +22,7 @@ def test_contains(query_params):
 def test_getitem(query_params):
     assert query_params['key1'] == 'value1'
     with pytest.raises(KeyError):
-        query_params['non-existent-key']
+        _ = query_params['non-existent-key']
 
 
 def test_repr(query_params):

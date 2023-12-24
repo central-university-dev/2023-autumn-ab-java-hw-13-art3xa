@@ -1,0 +1,4 @@
+[bandit]
+exclude = /frontend,/scripts,/tests,/venv
+tests: B101
+max-line-length = 120

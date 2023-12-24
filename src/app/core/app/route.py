@@ -16,11 +16,10 @@ def parse_path(path: str) -> tuple[re.Pattern, str, dict[str, str]]:
     for match in PARAM_REGEX.finditer(path):
         param_name, convertor_type = match.groups('str')
         convertor_type = convertor_type.lstrip(':')
-        assert convertor_type in CONVERTORS, f"Unknown path convertor '{convertor_type}'"
         convertor = CONVERTORS[convertor_type]
-        path_regex += re.escape(path[last_pos : match.start()])
+        path_regex += re.escape(path[last_pos: match.start()])
         path_regex += f'(?P<{param_name}>{convertor.regex})'
-        path_format += path[last_pos : match.start()]
+        path_format += path[last_pos: match.start()]
         path_format += '{%s}' % param_name
         param_convertors[param_name] = convertor
         last_pos = match.end()
@@ -41,7 +40,6 @@ def request_response(func):
 
 class Route:
     def __init__(self, path: str, endpoint, *, methods: list[str] | None = None) -> None:
-        assert path.startswith('/'), "Routed paths must start with '/'"
         self.path = path
         self.endpoint = request_response(endpoint)
         if methods is None:

@@ -47,5 +47,5 @@ def test_parse_path_supported_types(param_type, convertor):
 
 def test_parse_path_unsupported_type():
     path = '/test/{param:unsupported}'
-    with pytest.raises(AssertionError, match="Unknown path convertor 'unsupported'"):
+    with pytest.raises(KeyError):
         parse_path(path)

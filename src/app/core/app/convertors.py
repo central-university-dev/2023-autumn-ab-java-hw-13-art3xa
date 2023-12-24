@@ -8,9 +8,6 @@ class StrConvertor:
         return str(value)
 
     def to_str(self, value: str) -> str:
-        assert isinstance(value, str), 'value must be str'
-        assert value != '', 'value must be not empty'
-        assert '/' not in value, 'value must not contain "/"'
         return str(value)
 
 
@@ -22,7 +19,6 @@ class IntConvertor:
 
     def to_str(self, value: int) -> str:
         value = int(value)
-        assert value >= 0, 'value must be positive'
         return str(value)
 
 

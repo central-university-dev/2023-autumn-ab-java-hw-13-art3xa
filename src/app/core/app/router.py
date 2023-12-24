@@ -7,7 +7,6 @@ class Router:
         self.routes = routes or []
 
     async def __call__(self, scope, receive, send) -> None:
-        assert scope['type'] == 'http'
         scope['router'] = self
         for route in self.routes:
             match, child_scope = route.matches(scope)
