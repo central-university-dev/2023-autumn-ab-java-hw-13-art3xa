@@ -1,8 +1,9 @@
 from src.app.core.app.request import Request
+from src.app.core.app.types import Receive, Scope, Send
 
 
 def request_response(func):
-    async def app(scope, receive, send):
+    async def app(scope: Scope, receive: Receive, send: Send) -> None:
         request = Request(scope, receive, send)
         response = await func(request)
         await response(scope, receive, send)
@@ -15,8 +16,8 @@ class Route:
         self.path = path
         self.endpoint = request_response(endpoint)
 
-    async def __call__(self, scope, receive, send) -> None:
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
         await self.endpoint(scope, receive, send)
 
-    def matches(self, scope) -> bool:
+    def matches(self, scope) -> tuple[bool, Scope]:
         return self.path == scope['path']
