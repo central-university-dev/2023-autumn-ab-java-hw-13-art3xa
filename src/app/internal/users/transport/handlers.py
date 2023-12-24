@@ -1,23 +1,11 @@
-import base64
 import uuid
 
 from src.app.core.app.json_response import JSONResponse
 from src.app.core.app.request import Request
 from src.app.core.app.response import Response
+from src.app.internal.auth.hash import get_password_hash
 from src.app.internal.users.dto import UserCreateDTO, UserUpdateDTO
-from src.app.internal.users.repository import UserRepository
-from src.app.internal.users.service import UserService
-from src.db.di import get_db
-
-
-def get_password_hash(password: str) -> str:
-    return base64.b64encode(password.encode()).decode()
-
-
-def get_user_service():
-    db_conn = get_db()
-    user_repo = UserRepository(db_conn)
-    return UserService(user_repo)
+from src.app.internal.users.transport.di import get_user_service
 
 
 async def get_user(request: Request) -> Response:
@@ -45,6 +33,9 @@ async def create_user(request: Request) -> Response:
         is_active=user['is_active'],
         is_superuser=user['is_superuser'],
     )
+    user_db = user_service.get_by_email(user['email'])
+    if user_db:
+        return Response('User already exists', status_code=400)
     user_id = user_service.create_user(user_id, user_create_dto)
     return JSONResponse({'user_id': user_id}, status_code=201)
 

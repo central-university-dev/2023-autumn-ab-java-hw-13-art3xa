@@ -4,6 +4,7 @@ from src.app.core.app.app import App
 from src.app.core.app.request import Request
 from src.app.core.app.response import Response
 from src.app.core.app.route import Route
+from src.app.internal.auth.transport.handlers import login, register
 from src.app.internal.tasks.transport.handlers import (
     create_task,
     create_task_list,
@@ -34,6 +35,8 @@ settings = get_settings()
 routes = [
     Route('/', root),
     Route('/hello', hello),
+    Route('/api/auth/register', register, methods=['POST']),
+    Route('/api/auth/login', login, methods=['POST']),
     Route('/api/users', create_user, methods=['POST']),
     Route('/api/users', get_users, methods=['GET']),
     Route('/api/users/{user_id:uuid}', get_user, methods=['GET']),

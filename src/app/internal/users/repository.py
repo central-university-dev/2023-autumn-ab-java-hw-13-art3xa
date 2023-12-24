@@ -40,3 +40,11 @@ class UserRepository:
         with self.db_conn.cursor() as cursor:
             cursor.execute('DELETE FROM users WHERE id = %s', (user_id,))
             self.db_conn.commit()
+
+    def get_by_email(self, email: str):
+        with self.db_conn.cursor() as cursor:
+            cursor.execute(
+                'SELECT id, email, hashed_password, is_active, is_superuser, created_at FROM users WHERE email = %s',
+                (email,),
+            )
+            return cursor.fetchone()

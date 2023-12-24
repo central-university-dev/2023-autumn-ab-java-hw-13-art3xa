@@ -17,9 +17,9 @@ def parse_path(path: str) -> tuple[re.Pattern, str, dict[str, str]]:
         param_name, convertor_type = match.groups('str')
         convertor_type = convertor_type.lstrip(':')
         convertor = CONVERTORS[convertor_type]
-        path_regex += re.escape(path[last_pos: match.start()])
+        path_regex += re.escape(path[last_pos : match.start()])
         path_regex += f'(?P<{param_name}>{convertor.regex})'
-        path_format += path[last_pos: match.start()]
+        path_format += path[last_pos : match.start()]
         path_format += '{%s}' % param_name
         param_convertors[param_name] = convertor
         last_pos = match.end()

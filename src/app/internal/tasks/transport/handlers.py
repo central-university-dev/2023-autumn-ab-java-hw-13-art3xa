@@ -9,15 +9,7 @@ from src.app.internal.tasks.dto import (
     TaskListUpdateDTO,
     TaskUpdateDTO,
 )
-from src.app.internal.tasks.repository import TaskListRepository
-from src.app.internal.tasks.service import TaskListService
-from src.db.di import get_db
-
-
-def get_task_list_service():
-    db_conn = get_db()
-    task_list_repo = TaskListRepository(db_conn)
-    return TaskListService(task_list_repo)
+from src.app.internal.tasks.transport.di import get_task_list_service
 
 
 async def get_task_lists(request: Request) -> Response:
