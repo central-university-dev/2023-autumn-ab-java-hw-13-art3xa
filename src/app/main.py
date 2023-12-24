@@ -4,7 +4,7 @@ from src.app.core.app.app import App
 from src.app.core.app.request import Request
 from src.app.core.app.response import Response
 from src.app.core.app.route import Route
-from src.app.internal.tasks.transport.handlers import get_task
+from src.app.internal.tasks.transport.handlers import create_task, get_task, get_tasks
 
 
 async def root(request):
@@ -17,8 +17,12 @@ async def hello(request: Request):
 
 routes = [
     Route('/', root),
-    Route('/hello123', hello),
-    Route('/tasks/{task_id:int}', get_task),
+    Route('/hello', hello),
+
+    Route('/api/tasks', get_tasks, methods=['GET']),
+    Route('/api/tasks', create_task, methods=['POST']),
+    Route('/api/tasks/{task_id:uuid}', get_task, methods=['GET']),
+
 ]
 app = App(routes=routes)
 

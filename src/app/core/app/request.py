@@ -33,6 +33,10 @@ class Request:
     def receive(self) -> Receive:
         return self._receive
 
+    @property
+    def method(self) -> str:
+        return self.scope["method"]
+
     async def read_stream(self) -> AsyncGenerator[bytes, None]:
         while not self._stream_is_over:
             message = await self._receive()
@@ -56,3 +60,6 @@ class Request:
     async def json(self) -> Any:
         body = await self.body()
         return json.loads(body)
+
+    def __getitem__(self, key: str) -> Any:
+        return self.scope[key]

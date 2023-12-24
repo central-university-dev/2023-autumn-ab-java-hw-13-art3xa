@@ -10,8 +10,10 @@ class Router:
         assert scope['type'] == 'http'
         scope['router'] = self
         for route in self.routes:
-            if route.matches(scope):
-                await route(scope, receive, send)
+            match, child_scope = route.matches(scope)
+            if match:
+                scope.update(child_scope)
+                await route.endpoint(scope, receive, send)
                 return
         await self.not_found(scope, receive, send)
 
