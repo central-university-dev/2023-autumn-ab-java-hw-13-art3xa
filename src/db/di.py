@@ -13,7 +13,6 @@ def get_db():
     :yield: database session.
     """
     connection = None
-    print(settings)
     try:
         connection = psycopg2.connect(
             database=settings.POSTGRES_DATABASE,
