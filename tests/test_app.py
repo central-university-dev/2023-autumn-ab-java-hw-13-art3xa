@@ -14,7 +14,7 @@ async def test_app():
 
     route = Route(path="/test", endpoint=endpoint)
     app = App(routes=[route])
-    scope = {"type": "http", "path": "/test"}
+    scope = {"type": "http", "path": "/test", "method": "GET"}
     receive = AsyncMock()
     send = AsyncMock()
 

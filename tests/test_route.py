@@ -11,8 +11,8 @@ async def test_route():
     async def endpoint(request):
         return Response('Hello, World!')
 
-    route = Route(path="/test", endpoint=endpoint)
-    scope = {"path": "/test"}
+    route = Route(path="/test", endpoint=endpoint, methods=['GET'])
+    scope = {"path": "/test", "method": "GET"}
     receive = AsyncMock()
     send = AsyncMock()
     await route.__call__(scope, receive, send)
