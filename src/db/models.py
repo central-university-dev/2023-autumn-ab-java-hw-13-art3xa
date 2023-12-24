@@ -40,7 +40,7 @@ def create_tables():
         completed BOOLEAN DEFAULT FALSE,
         created_at TIMESTAMP DEFAULT NOW() NOT NULL
         );
-        """
+        """,
     ]
     db_conn = get_db()
     with db_conn.cursor() as cursor:

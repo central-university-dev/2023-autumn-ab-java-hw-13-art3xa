@@ -12,9 +12,9 @@ async def test_router():
     async def endpoint(request):
         return Response('Hello, World!')
 
-    route = Route(path="/test", endpoint=endpoint)
+    route = Route(path='/test', endpoint=endpoint)
     router = Router(routes=[route])
-    scope = {"type": "http", "path": "/test", "method": "GET"}
+    scope = {'type': 'http', 'path': '/test', 'method': 'GET'}
     receive = AsyncMock()
     send = AsyncMock()
 
@@ -28,9 +28,9 @@ async def test_not_found():
     async def endpoint(request):
         """This endpoint should never be called."""
 
-    route = Route(path="/test", endpoint=endpoint)
+    route = Route(path='/test', endpoint=endpoint)
     router = Router(routes=[route])
-    scope = {"type": "http", "path": "/not_found"}
+    scope = {'type': 'http', 'path': '/not_found'}
     receive = AsyncMock()
     send = AsyncMock()
 

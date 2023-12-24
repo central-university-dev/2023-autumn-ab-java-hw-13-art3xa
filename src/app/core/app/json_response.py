@@ -8,10 +8,11 @@ class JSONResponse(Response):
     media_type = 'application/json'
 
     def __init__(
-            self, content: Any = None,
-            status_code: int = 200,
-            headers: dict[str, str] | None = None,
-            media_type: str | None = None,
+        self,
+        content: Any = None,
+        status_code: int = 200,
+        headers: dict[str, str] | None = None,
+        media_type: str | None = None,
     ) -> None:
         super().__init__(content, status_code, headers, media_type)
 

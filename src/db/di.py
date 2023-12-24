@@ -1,4 +1,3 @@
-
 import psycopg2
 from psycopg2 import OperationalError, ProgrammingError
 
@@ -19,7 +18,8 @@ def get_db():
             user=settings.POSTGRES_USERNAME,
             password=settings.POSTGRES_PASSWORD,
             host=settings.POSTGRES_HOST,
-            port=settings.POSTGRES_PORT)
+            port=settings.POSTGRES_PORT,
+        )
         return connection
     except (OperationalError, ProgrammingError):
         connection.rollback()

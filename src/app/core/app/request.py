@@ -19,7 +19,7 @@ class Request:
 
     @property
     def path_params(self) -> dict[str, Any]:
-        return self.scope.get("path_params", {})
+        return self.scope.get('path_params', {})
 
     @property
     def headers(self) -> Headers:
@@ -35,19 +35,19 @@ class Request:
 
     @property
     def method(self) -> str:
-        return self.scope["method"]
+        return self.scope['method']
 
     async def read_stream(self) -> AsyncGenerator[bytes, None]:
         while not self._stream_is_over:
             message = await self._receive()
-            if message["type"] == "http.request":
+            if message['type'] == 'http.request':
                 body = message.get('body', b'')
                 more_body = message.get('more_body', False)
                 if not more_body:
                     self._stream_is_over = True
                 if body:
                     yield body
-            elif message["type"] == "http.disconnect":
+            elif message['type'] == 'http.disconnect':
                 raise ClientDisconnect()
         yield b''
 

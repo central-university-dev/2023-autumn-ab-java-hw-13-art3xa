@@ -1,11 +1,14 @@
+from src.app.internal.tasks.dto import TaskListCreateDTO
+
+
 class TaskListRepository:
     def __init__(self, db_conn):
         self.db_conn = db_conn
 
-    def create_task_list(self, task_list_id, task_list):
+    def create_task_list(self, task_list_id: str, task_list: TaskListCreateDTO):
         query = """
-            INSERT INTO task_lists (id, user_id, title, description) 
-            VALUES (%s, %s, %s, %s) 
+            INSERT INTO task_lists (id, user_id, title, description)
+            VALUES (%s, %s, %s, %s)
             RETURNING id
         """
         with self.db_conn.cursor() as cursor:
@@ -35,20 +38,28 @@ class TaskListRepository:
             result = cursor.fetchall()
         task_lists = {}
         for row in result:
-            print(row)
             task_list_id = row[0]
             if task_list_id not in task_lists:
-                task_lists[task_list_id] = {'id': task_list_id, 'title': row[1],
-                    'description': row[2], 'created_at': row[3],
-                    'tasks': []}
+                task_lists[task_list_id] = {
+                    'id': task_list_id,
+                    'title': row[1],
+                    'description': row[2],
+                    'created_at': row[3],
+                    'tasks': [],
+                }
 
             if row[4]:
                 task_lists[task_list_id]['tasks'].append(
-                    {'id': row[4], 'title': row[5], 'description': row[6],
-                        'due_date': row[7], 'completed': row[8],
-                        'created_at': row[9]})
+                    {
+                        'id': row[4],
+                        'title': row[5],
+                        'description': row[6],
+                        'due_date': row[7],
+                        'completed': row[8],
+                        'created_at': row[9],
+                    }
+                )
         return list(task_lists.values())
-
 
     def get_task_list(self, user_id, task_list_id):
         query = """
@@ -73,17 +84,26 @@ class TaskListRepository:
         for row in result:
             task_list_id = row[0]
             if task_list_id not in task_lists:
-                task_lists[task_list_id] = {'id': task_list_id, 'title': row[1],
-                    'description': row[2], 'created_at': row[3],
-                    'tasks': []}
+                task_lists[task_list_id] = {
+                    'id': task_list_id,
+                    'title': row[1],
+                    'description': row[2],
+                    'created_at': row[3],
+                    'tasks': [],
+                }
 
             if row[4]:
                 task_lists[task_list_id]['tasks'].append(
-                    {'id': row[4], 'title': row[5], 'description': row[6],
-                        'due_date': row[7], 'completed': row[8],
-                        'created_at': row[9]})
+                    {
+                        'id': row[4],
+                        'title': row[5],
+                        'description': row[6],
+                        'due_date': row[7],
+                        'completed': row[8],
+                        'created_at': row[9],
+                    }
+                )
         return list(task_lists.values())[0]
-
 
     def update_task_list(self, user_id, task_list_id, task_list):
         query = """
@@ -106,8 +126,8 @@ class TaskListRepository:
 
     def create_task(self, task_id, task):
         query = """
-            INSERT INTO tasks (id, task_list_id, title, description, due_date) 
-            VALUES (%s, %s, %s, %s, %s) 
+            INSERT INTO tasks (id, task_list_id, title, description, due_date)
+            VALUES (%s, %s, %s, %s, %s)
             RETURNING id
         """
         with self.db_conn.cursor() as cursor:

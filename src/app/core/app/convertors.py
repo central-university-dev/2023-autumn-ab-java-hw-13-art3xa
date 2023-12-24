@@ -47,8 +47,8 @@ class UUIDConvertor:
 
 
 CONVERTORS = {
-    "str": StrConvertor(),
-    "int": IntConvertor(),
-    "uuid": UUIDConvertor(),
-    "path": PathConvertor(),
+    'str': StrConvertor(),
+    'int': IntConvertor(),
+    'uuid': UUIDConvertor(),
+    'path': PathConvertor(),
 }

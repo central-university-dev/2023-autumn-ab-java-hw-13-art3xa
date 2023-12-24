@@ -8,9 +8,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class ModeEnum(str, Enum):
-    DEVELOPMENT = "DEVELOPMENT"
-    PRODUCTION = "PRODUCTION"
-    TESTING = "TESTING"
+    DEVELOPMENT = 'DEVELOPMENT'
+    PRODUCTION = 'PRODUCTION'
+    TESTING = 'TESTING'
 
 
 @dataclass
@@ -30,32 +30,32 @@ class Settings(BaseSettings):
     with environment variables.
     """
 
-    model_config = SettingsConfigDict(env_file=".env", case_sensitive=True, env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(env_file='.env', case_sensitive=True, env_file_encoding='utf-8')
 
     MODE: ModeEnum = ModeEnum.DEVELOPMENT
-    BASE_URL: str = "http://127.0.0.1:8000"
-    API_VERSION: str = "v1"
-    API_V1_STR: str = f"/api/{API_VERSION}"
-    PROJECT_NAME: str = "Backend"
+    BASE_URL: str = 'http://127.0.0.1:8000'
+    API_VERSION: str = 'v1'
+    API_V1_STR: str = f'/api/{API_VERSION}'
+    PROJECT_NAME: str = 'Backend'
     DEBUG: bool = True
     APP_PORT: int = 8000
 
-    POSTGRES_USERNAME: str = "postgres"
-    POSTGRES_PASSWORD: str = "postgres"
-    POSTGRES_HOST: str = "database"
+    POSTGRES_USERNAME: str = 'postgres'
+    POSTGRES_PASSWORD: str = 'postgres'
+    POSTGRES_HOST: str = 'database'
     POSTGRES_PORT: int = 5432
-    POSTGRES_DATABASE: str = "postgres"
+    POSTGRES_DATABASE: str = 'postgres'
 
-    JWT_SECRET_KEY: str = "secret"
-    JWT_ISSUER: str = "FastAPI"
-    JWT_ALGORITHM: str = "HS256"
+    JWT_SECRET_KEY: str = 'secret'
+    JWT_ISSUER: str = 'FastAPI'
+    JWT_ALGORITHM: str = 'HS256'
     JWT_ACCESS_TOKEN_TTL_SECONDS: int = 3600
     JWT_REFRESH_TOKEN_TTL_SECONDS: int = 86400
 
     @property
     def async_postgres_url(self) -> PostgresDsn:
         return PostgresDsn.build(
-            scheme="postgresql+asyncpg",
+            scheme='postgresql+asyncpg',
             host=self.POSTGRES_HOST,
             port=self.POSTGRES_PORT,
             username=self.POSTGRES_USERNAME,
@@ -66,7 +66,7 @@ class Settings(BaseSettings):
     @property
     def postgres_url(self) -> PostgresDsn:
         return PostgresDsn.build(
-            scheme="postgres",
+            scheme='postgres',
             host=self.POSTGRES_HOST,
             port=self.POSTGRES_PORT,
             username=self.POSTGRES_USERNAME,

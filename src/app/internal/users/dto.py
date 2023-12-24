@@ -1,6 +1,12 @@
-import uuid
-
 from pydantic import BaseModel
+
+
+class UserDTO(BaseModel):
+    id: str
+    email: str
+    is_active: bool
+    is_superuser: bool
+    created_at: str
 
 
 class UserCreateDTO(BaseModel):
@@ -10,9 +16,8 @@ class UserCreateDTO(BaseModel):
     is_superuser: bool = False
 
 
-class UserDTO(BaseModel):
-    id: str
-    email: str
-    is_active: bool
-    is_superuser: bool
-    created_at: str
+class UserUpdateDTO(BaseModel):
+    email: str | None = None
+    hashed_password: str | None = None
+    is_active: bool | None = None
+    is_superuser: bool | None = None

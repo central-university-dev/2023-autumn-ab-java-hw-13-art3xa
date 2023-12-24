@@ -1,5 +1,3 @@
-import uuid
-
 from pydantic import BaseModel
 
 
@@ -10,6 +8,7 @@ class TaskDTO(BaseModel):
     due_date: str
     completed: bool
     created_at: str
+
 
 class TaskCreateDTO(BaseModel):
     task_list_id: str
@@ -25,6 +24,14 @@ class TaskUpdateDTO(BaseModel):
     completed: bool | None = None
 
 
+class TaskListDTO(BaseModel):
+    id: str
+    title: str
+    description: str
+    created_at: str
+    tasks: list[TaskDTO]
+
+
 class TaskListCreateDTO(BaseModel):
     user_id: str
     title: str
@@ -34,12 +41,3 @@ class TaskListCreateDTO(BaseModel):
 class TaskListUpdateDTO(BaseModel):
     title: str | None = None
     description: str | None = None
-
-
-class TaskListDTO(BaseModel):
-    id: str
-    title: str
-    description: str
-    created_at: str
-    tasks: list[TaskDTO]
-

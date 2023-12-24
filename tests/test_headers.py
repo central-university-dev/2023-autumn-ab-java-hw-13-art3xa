@@ -6,7 +6,7 @@ from src.app.core.app.types import Scope
 
 @pytest.fixture
 def headers():
-    scope = {"type": "http", "headers": [(b'content-type', b'text/html')]}
+    scope = {'type': 'http', 'headers': [(b'content-type', b'text/html')]}
     return Headers(scope)
 
 
