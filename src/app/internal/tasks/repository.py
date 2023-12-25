@@ -5,19 +5,19 @@ class TaskListRepository:
     def __init__(self, db_conn):
         self.db_conn = db_conn
 
-    def create_task_list(self, task_list_id: str, task_list: TaskListCreateDTO):
+    def create_task_list(self, user_id: str, task_list_id: str, task_list: TaskListCreateDTO):
         query = """
             INSERT INTO task_lists (id, user_id, title, description)
             VALUES (%s, %s, %s, %s)
             RETURNING id
         """
         with self.db_conn.cursor() as cursor:
-            cursor.execute(query, (task_list_id, task_list.user_id, task_list.title, task_list.description))
+            cursor.execute(query, (task_list_id, user_id, task_list.title, task_list.description))
             task_list_id = cursor.fetchone()[0]
         self.db_conn.commit()
         return task_list_id
 
-    def get_task_lists(self, user_id):
+    def get_task_lists(self, user_id: str):
         query = """
             SELECT tl.id AS task_list_id,
                tl.title AS task_list_title,
@@ -61,7 +61,7 @@ class TaskListRepository:
                 )
         return list(task_lists.values())
 
-    def get_task_list(self, user_id, task_list_id):
+    def get_task_list(self, user_id: str, task_list_id: str):
         query = """
             SELECT tl.id AS task_list_id,
                 tl.title AS task_list_title,
@@ -80,6 +80,8 @@ class TaskListRepository:
         with self.db_conn.cursor() as cursor:
             cursor.execute(query, (user_id, task_list_id))
             result = cursor.fetchall()
+        if not result:
+            return None
         task_lists = {}
         for row in result:
             task_list_id = row[0]

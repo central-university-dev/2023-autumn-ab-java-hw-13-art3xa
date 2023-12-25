@@ -40,6 +40,8 @@ class TaskListService:
 
     def get_task_list(self, user_id, task_list_id) -> TaskListDTO:
         task_list = self.task_list_repo.get_task_list(user_id, task_list_id)
+        if not task_list:
+            return None
         tasks_dto = []
         for task in task_list['tasks']:
             task_dto = TaskDTO(
@@ -58,10 +60,10 @@ class TaskListService:
             created_at=task_list['created_at'].isoformat(),
             tasks=tasks_dto,
         )
-        return task_list_dto.model_dump()
+        return task_list_dto
 
-    def create_task_list(self, task_list_id: str, task_list: TaskListCreateDTO) -> str:
-        task_list_id = self.task_list_repo.create_task_list(task_list_id, task_list)
+    def create_task_list(self, user_id: str, task_list_id: str, task_list: TaskListCreateDTO) -> str:
+        task_list_id = self.task_list_repo.create_task_list(user_id, task_list_id, task_list)
         return task_list_id
 
     def update_task_list(self, user_id: str, task_list_id: str, task_list: TaskListUpdateDTO) -> None:
@@ -95,7 +97,7 @@ class TaskListService:
             completed=task[4],
             created_at=task[5].isoformat(),
         )
-        return task_dto.model_dump()
+        return task_dto
 
     def create_task(self, task_id: str, task: TaskCreateDTO) -> str:
         task_id = self.task_list_repo.create_task(task_id, task)

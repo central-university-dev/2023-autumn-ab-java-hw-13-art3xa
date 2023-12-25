@@ -33,7 +33,6 @@ class TaskListDTO(BaseModel):
 
 
 class TaskListCreateDTO(BaseModel):
-    user_id: str
     title: str
     description: str
 

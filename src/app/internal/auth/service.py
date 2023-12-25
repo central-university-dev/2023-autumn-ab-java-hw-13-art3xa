@@ -1,5 +1,6 @@
 import uuid
 
+from src.app.core.app.exceptions import HTTPException
 from src.app.core.app.response import Response
 from src.app.internal.auth.dto import JWTTokenCreateDTO, TokensDTO
 from src.app.internal.auth.hash import get_password_hash, verify_password
@@ -18,7 +19,7 @@ class AuthService:
 
     def register(self, user_dto: UserRegisterDTO) -> Response | TokensDTO:
         if self.user_repo.get_by_email(email=user_dto.email):
-            return Response(
+            return HTTPException(
                 status_code=400, content='Account already exists', headers={'WWW-Authenticate': 'Bearer'}
             ), None
         user_create = UserCreateDTO(email=user_dto.email, hashed_password=get_password_hash(user_dto.password))
@@ -30,7 +31,9 @@ class AuthService:
     def login(self, user_dto: UserRegisterDTO) -> Response | TokensDTO:
         user_data = self.user_repo.get_by_email(email=user_dto.email)
         if not user_data:
-            return Response(status_code=400, content='User not found', headers={'WWW-Authenticate': 'Bearer'}), None
+            return HTTPException(
+                status_code=400, content='User not found', headers={'WWW-Authenticate': 'Bearer'}
+            ), None
         user = UserFullDTO(
             id=user_data[0],
             email=user_data[1],
@@ -40,7 +43,9 @@ class AuthService:
             created_at=user_data[5].isoformat(),
         )
         if not verify_password(user_dto.password, user.hashed_password):
-            return Response(status_code=400, content='Incorrect password', headers={'WWW-Authenticate': 'Bearer'}), None
+            return HTTPException(
+                status_code=400, content='Incorrect password', headers={'WWW-Authenticate': 'Bearer'}
+            ), None
 
         return None, self._issue_tokens(user_id=user.id)
 
