@@ -1,4 +1,3 @@
-
 import pytest
 
 from src.app.core.app.query_params import QueryParams

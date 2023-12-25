@@ -55,12 +55,12 @@ async def test_route_wrong():
 
 def test_route_matches():
     mock_convertor = MagicMock()
-    mock_convertor.convert.return_value = "converted_value"
+    mock_convertor.convert.return_value = 'converted_value'
 
     route = Route(path='/test/{param}', endpoint=MagicMock(), methods=['GET'])
-    route.param_convertors = {"param": mock_convertor}
+    route.param_convertors = {'param': mock_convertor}
     scope = {'path': '/test/value', 'method': 'GET'}
     match, child_scope = route.matches(scope)
 
     mock_convertor.convert.assert_called_once_with('value')
-    assert child_scope['path_params'] == {"param": "converted_value"}
+    assert child_scope['path_params'] == {'param': 'converted_value'}

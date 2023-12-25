@@ -26,3 +26,9 @@ def test_getitem(headers):
 
 def test_repr(headers):
     assert repr(headers) == "Headers({'content-type': 'text/html'})"
+
+
+def test_get(headers):
+    assert headers.get('content-type') == 'text/html'
+    assert headers.get('non-existent-header') is None
+    assert headers.get('non-existent-header', 'default') == 'default'

@@ -10,6 +10,13 @@ class Headers:
     def items(self) -> list[tuple[str, str]]:
         return [(key.decode(self.encoding), value.decode(self.encoding)) for key, value in self._headers]
 
+    def get(self, key: str, default: str | None = None) -> str | None:
+        header_key = key.lower().encode(self.encoding)
+        for key, value in self._headers:
+            if key == header_key:
+                return value.decode(self.encoding)
+        return default
+
     def __contains__(self, key: str) -> bool:
         header_key = key.lower().encode(self.encoding)
         for key, _ in self._headers:
