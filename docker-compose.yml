@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  backend:
+    container_name: app-backend
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    restart: always
+    command: "sh -c 'poetry run uvicorn src.app.main:app --reload --workers 3 --host 0.0.0.0 --port 8000'"
+    volumes:
+      - .:/opt/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      database:
+        condition: service_healthy
+    logging:
+      driver: json-file
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+
+
+  database:
+    container_name: app-database
+    image: postgres:16.1-alpine
+    restart: always
+    volumes:
+      - 'pg_data:/var/lib/postgresql/data'
+    ports:
+      - "5432:5432" # Remove this on production
+    expose:
+      - 5432
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DATABASE} -U $${POSTGRES_USERNAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: json-file
+
+volumes:
+    pg_data:
+
+
